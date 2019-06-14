@@ -30,11 +30,14 @@ fn prove_collatz(n: &u128) -> u128 {
     count
 }
 fn main() {
-    let iters: u128 = (2..u128::pow(10, 80))
-        .into_par_iter()
-        .map(|x| prove_collatz(&x))
-        .sum();
-    println!("proven with a total of {}", iters);
+    for i in 1.. {
+        let max = u128::pow(10, i);
+        let iters: u128 = (2..max)
+                .into_par_iter()
+                .map(|x| prove_collatz(&x))
+                .sum();
+            println!("proven up to 10^{} with a total of {}", i, iters);
+    }
 }
 
 const CACHE_LIM: usize = 256 * 1024 * 1024;
