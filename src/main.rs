@@ -17,10 +17,28 @@ impl Cache {
     }
 }
 
-const CACHE_LIM: usize = 256 * 1024 * 1024;
+fn prove_collatz(n: &u128) -> u128 {
+    let mut i = *n;
+    let mut count = 0;
+    while i >= *n {
+        i = match i {
+            i if i % 2 == 0 => i / 2,
+            i => i * 3 + 1,
+        };
+        count += 1;
+    };
+    count
+}
 fn main() {
-    let max = 2000_000_000u64;
-    
+    let iters: u128 = (2..u128::pow(10, 80))
+        .into_par_iter()
+        .map(|x| prove_collatz(&x))
+        .sum();
+    println!("proven with a total of {}", iters);
+}
+
+const CACHE_LIM: usize = 256 * 1024 * 1024;
+pub fn find_collatz(max: u64) {    
     use std::cmp;
     let cache_size = cmp::min(CACHE_LIM, max as usize);
     let mut cache = Cache::new(cache_size);
